@@ -64,21 +64,20 @@ const seedPetal="#ef6f9a", seedCenter="#ffe08a";
 
 const bed=document.getElementById('bed'), grassFront=document.getElementById('grassFront');
 document.getElementById('totalF').textContent=memories.length;
-memories.forEach((m,i)=>{ const el=document.createElement('div'); el.className='flower'; el.tabIndex=0;
-  el.style.left=m.left+'%'; el.style.transitionDelay=(i*0.06)+'s';
-  el.innerHTML=flowerSVG(m,i)+'<span class="tag">'+m.date+'</span>';
-  el.addEventListener('click',()=>openMemory(m,i,el));
-  el.addEventListener('keydown',e=>{ if(e.key==='Enter') openMemory(m,i,el); });
-  bed.insertBefore(el,grassFront); m._el=el; });
-function layout(){ const bw=bed.clientWidth,bh=bed.clientHeight,k=Math.min(1,bw/920);
-  memories.forEach(m=>{ const d=m.depth; const w=(84+d*120)*k;
-    m._el.style.width=w+'px'; m._el.style.height=(w*1.55)+'px'; m._el.style.transform='translateX(-50%)';
-    m._el.style.bottom=((1-d)*bh*0.30 + bh*0.05)+'px'; m._el.style.zIndex=String(6+Math.round(d*50)); }); }
-addEventListener('resize',layout); setTimeout(layout,40);
-new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('bloom'); }),{threshold:.15})
-  .observe ? document.querySelectorAll('.flower').forEach(f=>{}) : 0;
-const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('bloom'); }),{threshold:.15});
-document.querySelectorAll('.flower').forEach(f=>io.observe(f));
+var plots=document.createElement('div'); plots.className='plots'; bed.insertBefore(plots,grassFront);
+memories.forEach(function(m,i){
+  var plot=document.createElement('div'); plot.className='plot';
+  var el=document.createElement('div'); el.className='flower'; el.tabIndex=0;
+  el.style.transitionDelay=(i*0.05)+'s';
+  el.style.maxWidth=(126+((i*3)%4)*9)+'px';   /* gentle organic size variation */
+  el.innerHTML=flowerSVG(m,i);
+  var lab=document.createElement('div'); lab.className='label'; lab.textContent=m.date;
+  el.addEventListener('click',function(){ openMemory(m,i,el); });
+  el.addEventListener('keydown',function(e){ if(e.key==='Enter') openMemory(m,i,el); });
+  plot.appendChild(el); plot.appendChild(lab); plots.appendChild(plot); m._el=el;
+});
+var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting) e.target.classList.add('bloom'); }); },{threshold:.2});
+document.querySelectorAll('.flower').forEach(function(f){ io.observe(f); });
 
 /* grass */
 function buildGrass(svg,count,W,Hmax,cols){ let s=''; for(let i=0;i<count;i++){ const x=(i/count)*W+(Math.random()-.5)*(W/count);
@@ -103,30 +102,60 @@ function openMemory(m,i,el){ showCard({date:m.date,title:m.title,note:m.note,pho
   if(!seen.has(i)){ seen.add(i); picked++; document.getElementById('picked').textContent=picked; el.classList.add('picked'); } }
 
 /* ================= WATER TO GROW (5 leaves + flower) ================= */
+function bigRose(cx,cy,idx,pal){
+  var d='M0 3 C-16 -6 -13 -29 0 -33 C13 -29 16 -6 0 3 Z', p='url(#p'+idx+')', s='';
+  s+=petPath(cx,cy,5,36,1.22,'M0 6 C-5 -12 -2 -34 0 -38 C2 -34 5 -12 0 6 Z','#4f9a5f');   /* sepals */
+  s+=petPath(cx,cy,8,0,1.08,d,shade(pal.p,.08));
+  s+=petPath(cx,cy,8,22,0.86,d,p);
+  s+=petPath(cx,cy,6,10,0.64,d,shade(pal.p,-.08));
+  s+=petPath(cx,cy,5,26,0.44,d,shade(pal.p,-.15));
+  s+=petPath(cx,cy,4,12,0.27,d,shade(pal.p,-.22));
+  s+='<circle cx="'+cx+'" cy="'+cy+'" r="3.4" fill="'+shade(pal.p,-.28)+'"/>';
+  return s;
+}
 const grow=document.getElementById('grow'); const cx=150, baseY=430, maxStem=300;
 const leafThr=[0.2,0.35,0.5,0.65,0.8];
 const leafY=leafThr.map(function(t){return baseY-maxStem*t;});
 var GP={p:seedPetal,c:seedCenter};
+/* 5 promise leaves (tappable) */
 var leavesStr='';
 for(var _i=0;_i<5;_i++){ var _s=(_i%2===0)?1:-1;
   leavesStr+='<g id="leaf'+_i+'" class="leafG" data-i="'+_i+'" style="pointer-events:auto" transform="translate('+cx+','+leafY[_i]+') scale(0)">'
-    +'<circle cx="30" cy="-38" r="56" fill="rgba(0,0,0,0)" pointer-events="all"/>'
-    +'<path d="M0 0 C58 -10 88 -44 76 -80 C38 -68 6 -38 0 0 Z" fill="url(#lfB)" stroke="#3f7d4e" stroke-width="2"/>'
-    +'<path d="M6 -6 C34 -24 58 -48 70 -74" stroke="rgba(0,0,0,.2)" stroke-width="1.8" fill="none"/>'
-    +'<path d="M20 -14 C30 -20 40 -30 47 -42 M38 -28 C48 -34 56 -44 61 -56" stroke="rgba(0,0,0,.12)" stroke-width="1" fill="none"/>'
+    +'<circle cx="30" cy="-40" r="60" fill="rgba(0,0,0,0)" pointer-events="all"/>'
+    +'<path d="M0 0 C60 -10 92 -46 80 -84 C40 -72 6 -40 0 0 Z" fill="url(#lfB)" stroke="#3f7d4e" stroke-width="2"/>'
+    +'<path d="M6 -6 C36 -26 60 -50 74 -78" stroke="rgba(0,0,0,.2)" stroke-width="1.8" fill="none"/>'
+    +'<path d="M22 -16 C32 -22 42 -32 49 -44 M40 -30 C50 -36 58 -46 63 -58" stroke="rgba(0,0,0,.12)" stroke-width="1" fill="none"/>'
     +'</g>'; }
+/* small decorative leaves (not tappable) for a fuller plant */
+var decoThr=[0.28,0.44,0.6,0.74], decoSide=[-1,1,-1,1], decoStr='';
+for(var _d=0;_d<4;_d++){
+  decoStr+='<g class="decoLeaf" data-t="'+decoThr[_d]+'" data-s="'+decoSide[_d]+'" style="pointer-events:none" transform="translate('+cx+','+(baseY-maxStem*decoThr[_d])+') scale(0)">'
+    +'<path d="M0 0 C34 -6 52 -26 45 -48 C22 -42 3 -22 0 0 Z" fill="url(#lfB)" opacity=".92"/>'
+    +'<path d="M4 -4 C20 -16 36 -30 43 -44" stroke="rgba(0,0,0,.14)" stroke-width="1.2" fill="none"/></g>'; }
+/* grass tuft + pebbles at the base */
+var tuft='<g id="tuft">';
+for(var _t=0;_t<11;_t++){ var tx=150+(_t-5)*11+(Math.random()*4-2), th=20+Math.random()*22, tl=(Math.random()-.5)*12;
+  tuft+='<path d="M'+tx.toFixed(1)+' 446 Q'+(tx+tl/2).toFixed(1)+' '+(446-th/2).toFixed(1)+' '+(tx+tl).toFixed(1)+' '+(446-th).toFixed(1)+'" stroke="'+(_t%2?'#4f9a5f':'#3f7d4e')+'" stroke-width="3" fill="none" stroke-linecap="round"/>'; }
+tuft+='<ellipse cx="118" cy="452" rx="11" ry="4.5" fill="#8f8579"/><ellipse cx="186" cy="454" rx="8" ry="3.6" fill="#9c9289"/></g>';
+
 grow.innerHTML =
   grads('B',GP)
-  +'<ellipse id="wet" cx="150" cy="444" rx="92" ry="24" fill="#3a2417" opacity="0"/>'
-  +'<ellipse cx="150" cy="448" rx="98" ry="28" fill="#6b4a35"/>'
-  +'<ellipse cx="150" cy="442" rx="98" ry="24" fill="#7d5a42"/>'
+  +'<ellipse id="wet" cx="150" cy="444" rx="94" ry="24" fill="#3a2417" opacity="0"/>'
+  +'<ellipse cx="150" cy="448" rx="100" ry="28" fill="#6b4a35"/>'
+  +'<ellipse cx="150" cy="442" rx="100" ry="24" fill="#7d5a42"/>'
+  +tuft
   +'<g id="sproutG" transform="translate(150,426)" opacity="0"><path d="M0 0 C-14 -4 -20 -16 -16 -26 C-4 -22 2 -10 0 0 Z" fill="#5aa060"/><path d="M0 0 C14 -4 20 -16 16 -26 C4 -22 -2 -10 0 0 Z" fill="#4f9a5f"/></g>'
-  +'<g id="stemG"><path d="M150 '+baseY+' C146 '+(baseY-110)+' 156 '+(baseY-210)+' 150 '+(baseY-maxStem)+'" stroke="url(#stB)" stroke-width="10" fill="none" stroke-linecap="round"/></g>'
+  +'<g id="stemG"><path d="M150 '+baseY+' C144 '+(baseY-110)+' 158 '+(baseY-210)+' 150 '+(baseY-maxStem)+'" stroke="url(#stB)" stroke-width="11" fill="none" stroke-linecap="round"/></g>'
+  +decoStr
   +leavesStr
-  +'<g id="budBloom"><g id="budG"><path d="M0 8 C-14 8 -18 -16 0 -38 C18 -16 14 8 0 8 Z" fill="url(#stB)"/></g>'
-    +'<g id="bloomG" data-flower="1" style="pointer-events:auto" opacity="0"><circle r="46" fill="rgba(0,0,0,0)" pointer-events="all"/><g transform="scale(1.55)">'+rose(0,0,'B',GP)+'</g></g></g>';
+  +'<g id="budBloom"><g id="budG"><path d="M0 8 C-15 8 -19 -18 0 -40 C19 -18 15 8 0 8 Z" fill="url(#stB)"/><path d="M0 -4 C-6 -6 -8 -22 0 -34 C8 -22 6 -6 0 -4 Z" fill="'+shade(seedPetal,-.08)+'" opacity=".65"/></g>'
+    +'<g id="bloomG" data-flower="1" style="pointer-events:auto" opacity="0"><circle r="54" fill="rgba(0,0,0,0)" pointer-events="all"/>'
+      +'<g transform="scale(1.95)">'+bigRose(0,0,'B',GP)+'</g>'
+      +'<g id="sparkleG">'+dotRing(0,0,8,1.7,52,'#fff3c0').replace(/<circle /g,'<circle class="spark" ')+'</g>'
+    +'</g></g>';
 const wet=grow.querySelector('#wet'), sproutG=grow.querySelector('#sproutG'), stemG=grow.querySelector('#stemG'),
       budBloom=grow.querySelector('#budBloom'), budG=grow.querySelector('#budG'), bloomG=grow.querySelector('#bloomG');
+const decoEls=[].slice.call(grow.querySelectorAll('.decoLeaf'));
 const leafEls=[].slice.call(grow.querySelectorAll('.leafG'));
 
 let g=0, grown=false, watering=false;
@@ -143,6 +172,8 @@ function updateGrow(){
   sproutG.setAttribute('transform','translate(150,426) scale('+(0.4+clamp(g/0.12)*0.6)+')');
   leafEls.forEach((el,i)=>{ const sc=clamp((stemFrac-leafThr[i])/0.1); const side=(i%2===0)?1:-1;
     el.setAttribute('transform','translate('+cx+','+leafY[i]+') scale('+(side*sc)+','+sc+')'); });
+  decoEls.forEach(function(el){ var thr=+el.dataset.t, side=+el.dataset.s, sc=clamp((stemFrac-thr)/0.1)*0.62;
+    el.setAttribute('transform','translate('+cx+','+(baseY-maxStem*thr)+') scale('+(side*sc)+','+sc+')'); });
   const budSc=clamp((g-0.4)/0.22), bloomSc=clamp((g-0.7)/0.3);
   budBloom.setAttribute('transform','translate('+cx+','+topY+')');
   budG.setAttribute('transform','scale('+(budSc*(1-bloomSc))+')'); budG.setAttribute('opacity',1-bloomSc);
