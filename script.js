@@ -192,10 +192,12 @@ updateGrow();
 /* watering interaction */
 const scene=document.getElementById('scene'), can=document.getElementById('can');
 function moveCan(e){ can.style.left=e.clientX+'px'; can.style.top=e.clientY+'px'; }
-scene.addEventListener('pointerdown',e=>{ if(grown){ return; } watering=true; can.style.opacity=1; can.style.transform='rotate(30deg)'; moveCan(e); });
+function stopWater(){ watering=false; can.style.opacity=0; can.style.transform='rotate(0)'; }
+scene.addEventListener('pointerdown',e=>{ if(grown) return; watering=true; can.style.opacity=1; can.style.transform='rotate(30deg)'; moveCan(e); });
 scene.addEventListener('pointermove',e=>{ if(watering) moveCan(e); });
-addEventListener('pointerup',()=>{ watering=false; can.style.opacity=0; can.style.transform='rotate(0)'; });
-scene.addEventListener('pointerleave',()=>{ if(watering){ watering=false; can.style.opacity=0; can.style.transform='rotate(0)'; } });
+addEventListener('pointerup',stopWater);
+addEventListener('pointercancel',stopWater);            /* fires when a swipe starts scrolling -> lets the page scroll */
+scene.addEventListener('pointerleave',()=>{ if(watering) stopWater(); });
 function waterLoop(){ if(watering && !grown){ g=clamp(g+0.0045); updateGrow();
   dropAt(); if(Math.random()<.6) dropAt(); } requestAnimationFrame(waterLoop); }
 waterLoop();
