@@ -43,17 +43,17 @@ const memories = [
 ];
 /* ===== EDIT: the 5 leaf promises ===== */
 const promises = [
-  "I promise to always make you laugh, even on the hard days.",
-  "I promise to hold your hand through every season.",
-  "I promise to chase our dreams together, however big.",
-  "I promise to really listen — always.",
-  "I promise to choose you, every single day.",
+  "I promise to hold your hand when life gets overwhelming.",
+  "I promise to celebrate your wins like they're my own.",
+  "I promise to keep choosing us, every single day.",
+  "I promise to annoy you just enough to keep life interesting.",
+  "I promise to roast you, then defend you five seconds later.",
 ];
 /* ===== EDIT: the flower's little love notes ===== */
 const loveNotes = [
   "You're my favourite hello and my hardest goodbye.",
-  "I still get butterflies. Every single time.",
-  "Home isn't a place — it's you.",
+  "If home had a heartbeat, it would sound like you.",
+  "Thank you for making my heart feel safe.",
   "Thank you for being exactly you.",
   "I love you more than yesterday, less than tomorrow.",
 ];
