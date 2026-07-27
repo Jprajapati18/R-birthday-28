@@ -32,14 +32,14 @@ function flowerSVG(m,idx){ var pal={p:m.petal,c:m.center};
 
 /* ===== EDIT: 8 memory flowers (each a different colour) ===== */
 const memories = [
-  { species:"daisy",     date:"How we met",        title:"The day we met",         note:"How you two met - the detail she'll smile at.", photo:"photos/met.jpg",       petal:"#ffffff", center:"#ffcf3f", left:8,  depth:.85 },
-  { species:"cosmos",    date:"Our first trip",    title:"Somewhere far, just us", note:"A trip memory. Add a photo and a line.",         photo:"photos/trip.jpg",      petal:"#f49ac1", center:"#ffd24a", left:20, depth:.5  },
-  { species:"sunflower", date:"Inside joke",       title:"\u201CThat\u201D thing", note:"The joke only you two get.",                     photo:"photos/joke.jpg",      petal:"#ffcf3f", center:"#7a4a25", left:32, depth:.9  },
-  { species:"tulip",     date:"The little things", title:"Your coffee face",       note:"A tiny ordinary thing you love.",                photo:"photos/coffee.jpg",    petal:"#f6944a", center:"#e0631f", left:44, depth:.55 },
-  { species:"lily",      date:"Our song",          title:"The one that's ours",    note:"The song that belongs to you two.",              photo:"photos/song.jpg",      petal:"#b57ee0", center:"#ffe08a", left:56, depth:.88 },
-  { species:"sakura",    date:"A quiet day",       title:"Doing nothing with you", note:"An ordinary afternoon that meant everything.",   photo:"photos/quiet.jpg",     petal:"#ffd1e0", center:"#f6c65a", left:68, depth:.5  },
-  { species:"rose",      date:"My favourite",      title:"You, over and over",     note:"Choosing her, every day.",                       photo:"photos/favourite.jpg", petal:"#e8556b", center:"#ffe08a", left:80, depth:.86 },
-  { species:"poppy",     date:"Always",            title:"Home is you",            note:"What home feels like now.",                      photo:"photos/home.jpg",      petal:"#ef5f5b", center:"#3a2233", left:92, depth:.6  },
+  { species:"daisy",     date:"❤️ Love",        title:"Forever Together",         note:"Choosing each other, every single day.", photo:"photos/met.jpg",       petal:"#ffffff", center:"#ffcf3f", left:8,  depth:.85 },
+  { species:"cosmos",    date:"🤝 Trust",    title:"Unbreakable Bond", note:"Faith in us through everything.",         photo:"photos/trip.jpg",      petal:"#f49ac1", center:"#ffd24a", left:20, depth:.5  },
+  { species:"sunflower", date:"💙 Understanding",       title:"Hear Each Other", note:"Listening with heart.",                     photo:"photos/joke.jpg",      petal:"#ffcf3f", center:"#7a4a25", left:32, depth:.9  },
+  { species:"tulip",     date:"🌿 Patience", title:"Grow Together",       note:"Giving love the time it needs.",                photo:"photos/coffee.jpg",    petal:"#f6944a", center:"#e0631f", left:44, depth:.55 },
+  { species:"lily",      date:"✨ Respect",          title:"Value Always",    note:"Honoring dreams, choices, and hearts.",              photo:"photos/song.jpg",      petal:"#b57ee0", center:"#ffe08a", left:56, depth:.88 },
+  { species:"sakura",    date:"🌸 Support",       title:"Side by Side", note:"Lifting each other through everything.",   photo:"photos/quiet.jpg",     petal:"#ffd1e0", center:"#f6c65a", left:68, depth:.5  },
+  { species:"rose",      date:"🤍 Forgiveness",      title:"Choose Peace",     note:"Letting go, loving even stronger.",                       photo:"photos/favourite.jpg", petal:"#e8556b", center:"#ffe08a", left:80, depth:.86 },
+  { species:"poppy",     date:"💍 Commitment",            title:"Always Us",            note:"Choosing forever, every single day.",                      photo:"photos/home.jpg",      petal:"#ef5f5b", center:"#3a2233", left:92, depth:.6  },
 ];
 /* ===== EDIT: the 5 leaf promises ===== */
 const promises = [
