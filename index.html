@@ -5,9 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Our Garden — for Rutu</title>
 <!-- ============================================================
-     OUR GARDEN · for Rutu · ONE FILE, NO DEPENDENCIES (GitHub Pages ready)
-     EDIT: memories[] (8 flowers) · promises[] (5 leaves) · loveNotes[] (flower)
-           seed* · finale* · <audio> · photos in /photos folder
+     OUR GARDEN · for Rutu
+     Project layout:
+        index.html          <- this file
+        photos/             <- put your images here (see names below)
+        your-song.mp3       <- optional background music (same folder as index.html)
+
+     Photos this page looks for (add any you have; missing ones
+     simply show "photo coming soon"):
+        photos/met.jpg  trip.jpg  joke.jpg  coffee.jpg
+        photos/song.jpg quiet.jpg favourite.jpg home.jpg
+
+     Everything you edit is below in the <script>, marked "EDIT":
+        memories[]  = the 8 meadow flowers
+        promises[]  = the 5 leaf promises
+        loveNotes[] = the flower's love notes
+        finale text = the birthday message (in the HTML above)
      ============================================================ -->
 <style>
   :root{ --cream:#fdf6ec; --ink:#33262e; }
@@ -160,14 +173,14 @@ const clamp=(v,a=0,b=1)=>Math.max(a,Math.min(b,v));
 
 /* ===== EDIT: 8 memory flowers (each a different colour) ===== */
 const memories = [
-  { date:"How we met",        title:"The day we met",           note:"How you two met — the detail she'll smile at.", photo:"", petal:"#e8556b", center:"#ffd98a", left:8,  depth:.85 },
-  { date:"Our first trip",    title:"Somewhere far, just us",   note:"A trip memory. Add a photo and a line.",        photo:"", petal:"#f39237", center:"#fff2c2", left:20, depth:.5  },
-  { date:"Inside joke",       title:"\u201CThat\u201D thing",   note:"The joke only you two get.",                    photo:"", petal:"#ffcf3f", center:"#c9704a", left:32, depth:.9  },
-  { date:"The little things", title:"Your coffee face",         note:"A tiny ordinary thing you love.",               photo:"", petal:"#f06fae", center:"#ffd98a", left:44, depth:.55 },
-  { date:"Our song",          title:"The one that's ours",      note:"The song that belongs to you two.",             photo:"", petal:"#9b6fe0", center:"#fff2c2", left:56, depth:.88 },
-  { date:"A quiet day",       title:"Doing nothing with you",   note:"An ordinary afternoon that meant everything.",  photo:"", petal:"#6f9be0", center:"#ffd98a", left:68, depth:.5  },
-  { date:"My favourite",      title:"You, over and over",       note:"Choosing her, every day.",                      photo:"", petal:"#ff7f6b", center:"#fff2c2", left:80, depth:.86 },
-  { date:"Always",            title:"Home is you",              note:"What home feels like now.",                     photo:"", petal:"#f4e6c4", center:"#e8a04a", left:92, depth:.6  },
+  { date:"How we met",        title:"The day we met",           note:"How you two met — the detail she'll smile at.", photo:"photos/met.jpg", petal:"#e8556b", center:"#ffd98a", left:8,  depth:.85 },
+  { date:"Our first trip",    title:"Somewhere far, just us",   note:"A trip memory. Add a photo and a line.",        photo:"photos/trip.jpg", petal:"#f39237", center:"#fff2c2", left:20, depth:.5  },
+  { date:"Inside joke",       title:"\u201CThat\u201D thing",   note:"The joke only you two get.",                    photo:"photos/joke.jpg", petal:"#ffcf3f", center:"#c9704a", left:32, depth:.9  },
+  { date:"The little things", title:"Your coffee face",         note:"A tiny ordinary thing you love.",               photo:"photos/coffee.jpg", petal:"#f06fae", center:"#ffd98a", left:44, depth:.55 },
+  { date:"Our song",          title:"The one that's ours",      note:"The song that belongs to you two.",             photo:"photos/song.jpg", petal:"#9b6fe0", center:"#fff2c2", left:56, depth:.88 },
+  { date:"A quiet day",       title:"Doing nothing with you",   note:"An ordinary afternoon that meant everything.",  photo:"photos/quiet.jpg", petal:"#6f9be0", center:"#ffd98a", left:68, depth:.5  },
+  { date:"My favourite",      title:"You, over and over",       note:"Choosing her, every day.",                      photo:"photos/favourite.jpg", petal:"#ff7f6b", center:"#fff2c2", left:80, depth:.86 },
+  { date:"Always",            title:"Home is you",              note:"What home feels like now.",                     photo:"photos/home.jpg", petal:"#f4e6c4", center:"#e8a04a", left:92, depth:.6  },
 ];
 /* ===== EDIT: the 5 leaf promises ===== */
 const promises = [
@@ -226,7 +239,7 @@ buildGrass(grassFront,40,1200,120,['#3f7d4e','#357045','#4a8a58']);
 const card=document.getElementById('card');
 function showCard({date,title,note,photo}){ const ph=document.getElementById('cPhoto');
   if(photo===undefined){ ph.className='photo hide'; }
-  else { ph.className='photo'; ph.innerHTML=photo?'<img src="'+photo+'" alt="">':'your photo here'; if(!photo) ph.textContent='your photo here'; }
+  else { ph.className='photo'; if(photo){ ph.innerHTML='<img src="'+photo+'" alt="" onerror="this.parentNode.textContent=\'\ud83d\udcf7 photo coming soon\'">'; } else { ph.textContent='your photo here'; } }
   document.getElementById('cDate').textContent=date||''; document.getElementById('cTitle').textContent=title||'';
   document.getElementById('cNote').textContent=note||''; card.classList.add('open'); }
 card.addEventListener('click',()=>card.classList.remove('open'));
